@@ -61,5 +61,15 @@ namespace BloggingPlatform.Controllers
             return View(model);
         }
         #endregion
+
+        #region Login
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }
