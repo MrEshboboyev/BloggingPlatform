@@ -18,5 +18,13 @@ namespace BloggingPlatform.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
+
+        #region Register
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        #endregion
     }
 }
