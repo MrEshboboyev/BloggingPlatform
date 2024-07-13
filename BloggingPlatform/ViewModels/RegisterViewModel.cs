@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace BloggingPlatform.ViewModels
 {
@@ -6,6 +7,7 @@ namespace BloggingPlatform.ViewModels
     {
         [Required]
         [DataType(DataType.EmailAddress)]
+        [Remote(action: "IsEmailAvailable", controller: "Account")]
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]

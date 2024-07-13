@@ -1,4 +1,5 @@
 ﻿using BloggingPlatform.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -112,6 +113,28 @@ namespace BloggingPlatform.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        #endregion
+
+        #region Email Available
+
+        [AllowAnonymous]
+        [HttpPost]
+        [HttpGet]
+        public async Task<IActionResult> IsEmailAvailable(string email)
+        {
+            // check if email is already use in Database
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if(user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already use!");
+            }
         }
 
         #endregion
