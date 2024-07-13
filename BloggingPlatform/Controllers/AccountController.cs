@@ -65,13 +65,14 @@ namespace BloggingPlatform.Controllers
         #region Login
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl = null)
         {
+            TempData["ReturnUrl"] = returnUrl;
             return View();
         }
         
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +81,14 @@ namespace BloggingPlatform.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
 
                 // display errors
@@ -91,6 +99,7 @@ namespace BloggingPlatform.Controllers
                 }
             }
 
+            TempData["ReturnUrl"] = returnUrl;
             return View(model);
         }
 
