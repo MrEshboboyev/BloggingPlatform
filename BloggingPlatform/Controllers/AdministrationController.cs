@@ -1,4 +1,5 @@
-﻿using BloggingPlatform.ViewModels;
+﻿using BloggingPlatform.Models;
+using BloggingPlatform.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,9 @@ namespace BloggingPlatform.Controllers
     public class AdministrationController : Controller
     {
         // DI : RoleManager
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager)
+        public AdministrationController(RoleManager<ApplicationRole> roleManager)
         {
             _roleManager = roleManager;
         }
@@ -36,7 +37,14 @@ namespace BloggingPlatform.Controllers
                 }
                 else
                 {
-                    var result = await _roleManager.CreateAsync(new IdentityRole { Name = model.RoleName });
+                    var role = new ApplicationRole
+                    { 
+                        Name = model.RoleName,
+                        Description = model.Description
+                    };
+
+
+                    var result = await _roleManager.CreateAsync(role);
 
                     if (result.Succeeded)
                     {
@@ -60,7 +68,7 @@ namespace BloggingPlatform.Controllers
         [HttpGet]
         public async Task<IActionResult> ListRoles()
         {
-            List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
+            List<ApplicationRole> roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
         }
 
@@ -106,6 +114,7 @@ namespace BloggingPlatform.Controllers
                 else
                 {
                     role.Name = model.RoleName;
+                    role.Description = model.Description;
                  
                     var result = await _roleManager.UpdateAsync(role);
 

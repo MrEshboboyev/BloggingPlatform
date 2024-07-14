@@ -9,5 +9,6 @@ namespace BloggingPlatform.ViewModels
         [Required]
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
+        public string? Description { get; set; }
     }
 }

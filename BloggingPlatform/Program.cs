@@ -1,4 +1,5 @@
 using BloggingPlatform.Data;
+using BloggingPlatform.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 });
 
 // configure identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // configure application cookie settings
