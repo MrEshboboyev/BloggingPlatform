@@ -10,5 +10,6 @@ namespace BloggingPlatform.ViewModels
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
         public string? Description { get; set; }
+        public List<string?> Users { get; set; }
     }
 }

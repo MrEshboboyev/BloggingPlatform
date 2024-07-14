@@ -10,10 +10,13 @@ namespace BloggingPlatform.Controllers
     {
         // DI : RoleManager
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AdministrationController(RoleManager<ApplicationRole> roleManager)
+        public AdministrationController(RoleManager<ApplicationRole> roleManager,
+            UserManager<IdentityUser> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         #region Create Role
