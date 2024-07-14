@@ -125,5 +125,33 @@ namespace BloggingPlatform.Controllers
         }
 
         #endregion
+
+        #region Delete Role
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRole(string roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+
+            if (role == null)
+            {
+                ModelState.AddModelError(string.Empty, $"Role with Id = {roleId} is not found!");
+                return View("Error");
+            }
+
+            var result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ListRoles", "Administration");
+            }
+
+            foreach(var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View("Error");
+        }
+        #endregion
     }
 }
