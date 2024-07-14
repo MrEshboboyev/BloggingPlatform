@@ -40,7 +40,7 @@ namespace BloggingPlatform.Controllers
 
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("ListRoles");
                     }
 
                     foreach (var error in result.Errors)
@@ -62,6 +62,66 @@ namespace BloggingPlatform.Controllers
         {
             List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
             return View(roles);
+        }
+
+        #endregion
+
+        #region Edit Role
+
+        [HttpGet]
+        public async Task<IActionResult> EditRole(string roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+
+            if(role == null)
+            {
+                ModelState.AddModelError(string.Empty, $"Role with Id = {roleId} not found!");
+            }
+            else
+            {
+                // instance EditRoleViewModel
+                var model = new EditRoleViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+                return View(model);
+            }
+
+            return RedirectToAction("ListRoles", "Administration");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRole(EditRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var role = await _roleManager.FindByIdAsync(model.RoleId);
+
+                if (role == null)
+                {
+                    ModelState.AddModelError(string.Empty, $"Role with Id = {model.RoleId} is not found!");
+                    return View("Error");
+                }
+                else
+                {
+                    role.Name = model.RoleName;
+                 
+                    var result = await _roleManager.UpdateAsync(role);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+
+            return View(model);
         }
 
         #endregion
