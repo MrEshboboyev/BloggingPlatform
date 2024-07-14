@@ -94,8 +94,20 @@ namespace BloggingPlatform.Controllers
                 var model = new EditRoleViewModel
                 {
                     RoleId = role.Id,
-                    RoleName = role.Name
+                    RoleName = role.Name,
+                    Description = role.Description,
+                    Users = new List<string?>()
                 };
+
+                // adding is in role user to Users list 
+                foreach (var user in await _userManager.Users.ToListAsync())
+                {
+                    if(await _userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        model.Users.Add(user.UserName);
+                    }
+                }
+
                 return View(model);
             }
 
