@@ -1,6 +1,7 @@
 ﻿using BloggingPlatform.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BloggingPlatform.Controllers
 {
@@ -50,6 +51,17 @@ namespace BloggingPlatform.Controllers
             }
 
             return View(model);
+        }
+
+        #endregion
+
+        #region List Roles
+
+        [HttpGet]
+        public async Task<IActionResult> ListRoles()
+        {
+            List<IdentityRole> roles = await _roleManager.Roles.ToListAsync();
+            return View(roles);
         }
 
         #endregion
