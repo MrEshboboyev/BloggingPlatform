@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BloggingPlatform.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingPlatform.Controllers
@@ -13,5 +14,44 @@ namespace BloggingPlatform.Controllers
             _roleManager = roleManager;
         }
 
+        #region Create Role
+
+        [HttpGet]
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                bool roleExists = await _roleManager.RoleExistsAsync(model.RoleName);
+
+                if (roleExists)
+                {
+                    ModelState.AddModelError(string.Empty, $"Role {model.RoleName} already exists!");
+                }
+                else
+                {
+                    var result = await _roleManager.CreateAsync(new IdentityRole { Name = model.RoleName });
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+
+            return View(model);
+        }
+
+        #endregion
     }
 }
