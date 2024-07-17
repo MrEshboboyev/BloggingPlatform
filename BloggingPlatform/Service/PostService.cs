@@ -14,9 +14,10 @@ namespace BloggingPlatform.Services
             _context = context;
         }
 
-        public Task CreatePostAsync(BlogPost post)
+        public async Task CreatePostAsync(BlogPost post)
         {
-            throw new NotImplementedException();
+            await _context.BlogPosts.AddAsync(post);
+            await _context.SaveChangesAsync();
         }
 
         public Task DeletePostAsync(int postId)

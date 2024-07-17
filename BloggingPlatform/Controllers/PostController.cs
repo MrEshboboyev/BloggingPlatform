@@ -1,4 +1,5 @@
 ﻿using BloggingPlatform.Data;
+using BloggingPlatform.Models;
 using BloggingPlatform.Service.IService;
 using BloggingPlatform.ViewModels.BlogViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -34,5 +35,38 @@ namespace BloggingPlatform.Controllers
 
             return View(model);
         }
+
+        #region Create Post
+
+        [HttpGet]
+        public IActionResult CreatePost()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> CreatePost(CreateBlogPostViewModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                var userId = _userManager.GetUserId(User);
+
+                var post = new BlogPost
+                {
+                    Title = model.Title,
+                    Content = model.Content,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    AuthorId = userId
+                };
+
+                await _postService.CreatePostAsync(post);
+                return RedirectToAction("PostIndex");
+            }
+
+            return View(model);
+        }
+
+        #endregion
     }
 }
