@@ -254,12 +254,12 @@ namespace BloggingPlatform.Controllers
                     else
                         continue;
 
-                    if(i < model.Count - 1)
+                    if (i < model.Count - 1)
                         continue;
                     else
-                        return RedirectToAction("EditRole", new { roleId = roleId});
+                        return RedirectToAction("EditRole", new { roleId = roleId });
                 }
-                
+
                 return RedirectToAction("EditRole", new { roleId = roleId });
             }
         }
@@ -271,6 +271,38 @@ namespace BloggingPlatform.Controllers
         public async Task<IActionResult> ListUsers()
         {
             IEnumerable<IdentityUser> model = await _userManager.Users.ToListAsync();
+            return View(model);
+        }
+
+        #endregion
+
+        #region Edit User
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string userId)
+        {
+            // checking a user in database
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with ID = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            // if user was found
+            var claims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var model = new EditUserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Roles = roles,
+                Claims = claims.Select(c => c.Value).ToList()
+            };
+
             return View(model);
         }
 
