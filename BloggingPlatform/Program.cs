@@ -1,5 +1,7 @@
 using BloggingPlatform.Data;
 using BloggingPlatform.Models;
+using BloggingPlatform.Service.IService;
+using BloggingPlatform.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +29,9 @@ builder.Services.ConfigureApplicationCookie(option =>
         // configure access denied path
         option.AccessDeniedPath = "/Account/AccessDenied";
     });
+
+// adding lifetime scopes
+builder.Services.AddScoped<IPostService, PostService>();
 
 var app = builder.Build();
 

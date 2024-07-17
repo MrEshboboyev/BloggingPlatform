@@ -1,0 +1,45 @@
+﻿@model IEnumerable<BlogPostViewModel>
+
+@{
+    ViewBag.Title = "My Blog Posts";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<a class="btn btn-primary mb-3" asp-action="Create" asp-controller="Blog">Create New Post</a>
+
+@if (!Model.Any())
+{
+    <p>No blog posts available. Start by creating a new post.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in Model)
+                {
+                    <tr>
+                        <td>@post.Title</td>
+                        <td>@post.Content</td>
+                        <td>@post.CreatedAt.ToString("g")</td>
+                        <td>@post.UpdatedAt.ToString("g")</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
