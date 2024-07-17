@@ -1,11 +1,13 @@
 ﻿using BloggingPlatform.Models;
 using BloggingPlatform.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BloggingPlatform.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         // DI : RoleManager
