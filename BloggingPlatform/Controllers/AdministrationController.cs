@@ -342,5 +342,36 @@ namespace BloggingPlatform.Controllers
         }
 
         #endregion
+
+        #region Delete User
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            // checking user in database
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with ID = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ListUsers", "Administration");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View("Error");
+        }
+
+        #endregion
     }
 }
