@@ -306,6 +306,41 @@ namespace BloggingPlatform.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            // checking user in database
+            var user = await _userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with ID = {model.Id} cannot be found";
+                return View("NotFound");
+            }
+
+            // update fields 
+            user.Email = model.Email;
+            user.UserName = model.UserName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if(result.Succeeded)
+            {
+                return RedirectToAction("ListUsers");
+            }
+            else
+            {
+                // adding errors to ModelState
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+
+            return View(model);
+        }
+
         #endregion
     }
 }
