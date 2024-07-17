@@ -139,5 +139,16 @@ namespace BloggingPlatform.Controllers
         }
 
         #endregion
+
+        #region Access Denied
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }

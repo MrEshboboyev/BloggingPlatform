@@ -23,6 +23,9 @@ builder.Services.ConfigureApplicationCookie(option =>
     {
         // configure login path
         option.LoginPath = "/Account/Login";
+
+        // configure access denied path
+        option.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 var app = builder.Build();
