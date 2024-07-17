@@ -394,5 +394,54 @@ namespace BloggingPlatform.Controllers
         }
 
         #endregion
+
+        #region Manager User Roles
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string userId)
+        {
+            // checking user in db
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with ID = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            // added ViewBag for displaying view
+            ViewBag.UserId = userId;
+            ViewBag.UserName = user.UserName;
+
+            // create model type UserRolesViewModel
+            List<UserRolesViewModel> model = new List<UserRolesViewModel>();
+
+            var roles = await _roleManager.Roles.ToListAsync();
+
+            foreach (var role in roles)
+            {
+                var userRolesViewModel = new UserRolesViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name,
+                    Description = role.Description
+                };
+
+                if(await _userManager.IsInRoleAsync(user, role.Name))
+                {
+                    userRolesViewModel.IsSelected = true;
+                }
+                else
+                {
+                    userRolesViewModel.IsSelected = false;
+                }
+
+                model.Add(userRolesViewModel);
+            }
+
+            return View(model);
+        }
+
+        #endregion
     }
 }
