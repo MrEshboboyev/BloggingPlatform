@@ -442,6 +442,48 @@ namespace BloggingPlatform.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesViewModel> model,
+            string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = $"User with ID = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            // getting all assigned roles
+            var roles = await _userManager.GetRolesAsync(user);
+
+            // removing all assigned role was assigned this user
+            var result = await _userManager.RemoveFromRolesAsync(user, roles);
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot remove user existing roles");
+                return View(model);
+            }
+
+            // get all selected roles to be this user
+            List<string> rolesToBeAssigned = model.Where(r => r.IsSelected).
+                Select(role => role.RoleName).ToList();
+
+            // any selected role in this user
+            if(rolesToBeAssigned.Any())
+            {
+                result = await _userManager.AddToRolesAsync(user, rolesToBeAssigned);
+
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", "Cannot adding selected roles to user");
+                    return View(model);
+                }
+            }
+
+            return RedirectToAction("EditUser", new { userId = userId});
+        }
         #endregion
     }
 }
