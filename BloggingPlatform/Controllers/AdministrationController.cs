@@ -265,5 +265,15 @@ namespace BloggingPlatform.Controllers
         }
 
         #endregion
+
+        #region List Users
+
+        public async Task<IActionResult> ListUsers()
+        {
+            IEnumerable<IdentityUser> model = await _userManager.Users.ToListAsync();
+            return View(model);
+        }
+
+        #endregion
     }
 }
