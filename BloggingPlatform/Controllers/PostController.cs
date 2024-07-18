@@ -2,11 +2,13 @@
 using BloggingPlatform.Models;
 using BloggingPlatform.Service.IService;
 using BloggingPlatform.ViewModels.BlogViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloggingPlatform.Controllers
 {
+    [Authorize]
     public class PostController : Controller
     {
         private readonly IPostService _postService;
