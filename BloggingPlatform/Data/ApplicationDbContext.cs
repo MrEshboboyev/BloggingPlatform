@@ -15,6 +15,9 @@ namespace BloggingPlatform.Data
         // create a DbSet for BlogPosts
         public DbSet<BlogPost> BlogPosts { get; set; }
 
+        // create a DbSet for Comments
+        public DbSet<BlogPost> Comments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
