@@ -68,5 +68,65 @@ namespace BloggingPlatform.Controllers
         }
 
         #endregion
+
+        #region Delete Post
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePost(int postId)
+        {
+            await _postService.DeletePostAsync(postId);
+            return RedirectToAction("PostIndex");
+        }
+
+        #endregion
+
+        #region Edit Post
+
+        [HttpGet]
+        public async Task<IActionResult> EditPost(int postId)
+        {
+            var post = await _postService.GetPostByIdAsync(postId);
+
+            if(post == null)
+            {
+                ModelState.AddModelError(string.Empty, $"Post with Id : {postId} is not found in Database!");
+                return View("Error");
+            }
+
+            var model = new EditBlogPostViewModel
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPost(EditBlogPostViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var post = await _postService.GetPostByIdAsync(model.Id);
+
+                if (post == null)
+                {
+                    return NotFound();
+                }
+
+                post.Title = model.Title;
+                post.Content = model.Content;
+                post.UpdatedAt = DateTime.UtcNow;
+
+                await _postService.UpdatePostAsync(post);
+
+                return RedirectToAction("PostIndex");
+            }
+
+            return View(model);
+        }
+
+        #endregion
     }
 }

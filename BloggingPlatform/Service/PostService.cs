@@ -20,14 +20,16 @@ namespace BloggingPlatform.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task DeletePostAsync(int postId)
+        public async Task DeletePostAsync(int postId)
         {
-            throw new NotImplementedException();
+            var post = await _context.BlogPosts.FirstOrDefaultAsync(p => p.Id == postId);
+            _context.BlogPosts.Remove(post);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<BlogPost> GetPostByIdAsync(int postId)
+        public async Task<BlogPost> GetPostByIdAsync(int postId)
         {
-            throw new NotImplementedException();
+            return await _context.BlogPosts.FirstOrDefaultAsync(p => p.Id == postId);
         }
 
         public async Task<List<BlogPost>> GetPostsAsync(string userId)
@@ -37,9 +39,17 @@ namespace BloggingPlatform.Services
                 ToListAsync();
         }
 
-        public Task UpdatePostAsync(BlogPost post)
+        public async Task UpdatePostAsync(BlogPost post)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.BlogPosts.Update(post);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }
