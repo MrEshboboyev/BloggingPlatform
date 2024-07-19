@@ -4,6 +4,7 @@ namespace BloggingPlatform.Service.IService
 {
     public interface IPostService
     {
+        Task<List<BlogPost>> GetAllPostsAsync();
         Task<List<BlogPost>> GetPostsAsync(string userId);
         Task<BlogPost> GetPostByIdAsync(int postId);
         Task CreatePostAsync(BlogPost post);

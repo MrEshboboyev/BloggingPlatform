@@ -14,6 +14,13 @@ namespace BloggingPlatform.Services
             _context = context;
         }
 
+        public async Task<List<BlogPost>> GetAllPostsAsync()
+        {
+            return await _context.BlogPosts
+                .Include(bg => bg.Author)                
+                .ToListAsync();
+        }
+
         public async Task CreatePostAsync(BlogPost post)
         {
             await _context.BlogPosts.AddAsync(post);
@@ -29,7 +36,9 @@ namespace BloggingPlatform.Services
 
         public async Task<BlogPost> GetPostByIdAsync(int postId)
         {
-            return await _context.BlogPosts.FirstOrDefaultAsync(p => p.Id == postId);
+            return await _context.BlogPosts
+                .Include(bp => bp.Author)
+                .FirstOrDefaultAsync(p => p.Id == postId);
         }
 
         public async Task<List<BlogPost>> GetPostsAsync(string userId)

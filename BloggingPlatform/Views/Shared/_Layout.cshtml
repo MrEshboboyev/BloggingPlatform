@@ -10,6 +10,37 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BloggingPlatform.styles.css" asp-append-version="true" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #F0FFFF;
+        }
+        
+
+        .btn-primary-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary-custom:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -103,17 +134,20 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
+@* 
+    <footer class="footer">
         <div class="container">
-            &copy; 2024 - BloggingPlatform - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <span>© 2024 - BloggingPlatform - <a href="/Privacy">Privacy</a></span>
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
